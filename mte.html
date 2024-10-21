@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Markdown Typing Effect</title>
+  <style>
+    #typewriter {
+      font-family: monospace;
+      border: 1px solid #ddd;
+      padding: 10px;
+      white-space: pre-wrap;
+      /* Maintains whitespace from Markdown */
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="typewriter"></div>
+
+  <!-- 引入marked库 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <script>
+    // Markdown字符串
+    const data = { "id": "66efcea50b4f1aadab1a63f0", "conversation_id": "66ef6f0b2a9908afdbb3ba5e", "assistant_id": "65daeb85eb555e53ba9d534e", "parts": [{ "id": "66efcea50b4f1aadab1a63f0", "logic_id": "6e04022f-dec7-4e6e-9c48-302cb23d4574", "role": "assistant", "content": [{ "type": "text", "text": "当然可以。让我们通过一个具体的例子来详细说明`sinon.js`的用法。假设我们有一个简单的函数`calculateTotal`，它计算两个数字的总和，并且依赖一个外部API来获取一些数据。我们想要测试这个函数，但不想实际调用外部API，因为这会引入很多不可控的因素。\n\n首先，我们定义`calculateTotal`函数：\n\n```javascript\nfunction calculateTotal(a, b) {\n    // 假设这是一个依赖外部API的函数\n    const externalData = getExternalData();\n\n    return a + b + externalData;\n}\n```\n\n然后，我们使用`sinon.js`来模拟`getExternalData`函数的行为，以便我们可以控制它的返回值。\n\n```javascript\nconst sinon = require('sinon');\nconst assert = require('assert');\n\ndescribe('calculateTotal', function() {\n    it('should calculate the total correctly', function() {\n        // 创建一个存根来模拟getExternalData函数\n        const stub = sinon.stub().returns(10);\n        const calculateTotal = require('./calculateTotal');\n        calculateTotal.getExternalData = stub;\n\n        // 调用calculateTotal函数\n        const result = calculateTotal(2, 3);\n\n        // 验证存根是否被调用了一次\n        sinon.assert.calledOnce(stub);\n\n        // 验证结果是否符合预期\n        assert.equal(result, 15);\n    });\n});\n```\n\n在这个例子中，我们做了以下几件事：\n\n1. 引入`sinon`和`assert`模块。\n2. 定义`calculateTotal`函数，它依赖于`getExternalData`。\n3. 使用`sinon.stub()`创建一个存根，并将其赋值给`calculateTotal.getExternalData`。\n4. 在测试中调用`calculateTotal`函数，并传递一些参数。\n5. 使用`sinon.assert.calledOnce()`来验证`getExternalData`是否被调用了一次。\n6. 使用`assert.equal()`来验证`calculateTotal`的返回值是否符合预期。\n\n通过这种方式，我们可以完全控制`getExternalData`函数的行为，而不必担心外部因素的影响，从而更准确地测试`calculateTotal`函数。" }], "model": "chatglm-all-tools", "recipient": "all", "created_at": "2024-09-22 16:00:38", "meta_data": { "usage": { "prompt_tokens": 7618, "completion_tokens": 541, "total_tokens": 8159 }, "toolCallRecipient": "", "citations": [] }, "status": "finish" }], "created_at": "2024-09-22 16:00:37", "meta_data": { "mention_conversation_id": "", "is_test": false, "input_question_type": "xxxx", "channel": "", "draft_id": "", "quote_log_id": "", "platform": "pc", "ip": "120.230.78.80", "exp_groups": ["mainchat_funcall:blank:blank", "chat_aisearch:blank:blank", "mainchat_rag:exp:A", "mainchat_searchrateboost:blank:blank", "mainchat_searchengine:exp:serpapi_bing"], "referer": "", "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36", "first_token_time": 2.5915067195892334, "total_time": 91.62524676322937, "answer_type": "text", "prompt_tokens": 7618, "completion_tokens": 541, "total_tokens": 8159 }, "status": "finish", "last_error": {} }
+    const markdownString = data.parts[0].content[0].text;
+
+    // 函数用于模拟打字效果，并渲染Markdown
+    function typeEffect(element, text, speed = 50) {
+      let i = 0;
+      function type() {
+        if (i < text.length) {
+          // 使用marked解析Markdown文本
+          element.innerHTML = marked.parse(text.substring(0, i + 1));
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      type();
+    }
+
+    // 获取元素
+    const typewriterElement = document.getElementById('typewriter');
+
+    // 开始打字效果
+    typeEffect(typewriterElement, markdownString);
+  </script>
+
+</body>
+
+</html>

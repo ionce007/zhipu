@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Tab组件</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+    
+    body {
+      padding: 20px;
+      text-align: left;
+      font-family: Lato;
+      /*color: #fff;
+      background: #9b59b6;*/
+    }
+    
+    .draw-prompt-tabs {
+      width: 650px;
+      float: none;
+      list-style: none;
+      position: relative;
+      margin: 80px 0 0 10px;
+      text-align: left;
+    }
+    .draw-prompt-tabs li {
+      float: left;
+      display: block;
+    }
+    .draw-prompt-tabs input[type="radio"] {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+    .draw-prompt-tabs label {
+      display: block;
+      padding: 14px 21px;
+      border-radius: 2px 2px 0 0;
+      font-size: 16px;
+      font-weight: normal;
+      text-transform: uppercase;
+      /*background: #8e44ad;*/
+      cursor: pointer;
+      position: relative;
+      top: 4px;
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
+    }
+    .draw-prompt-tabs label:hover {
+      background: #ccc;
+      opacity: 0.5;
+    }
+    .draw-prompt-tabs .tab-content {
+      z-index: 2;
+      display: none;
+      overflow: hidden;
+      width: 100%;
+      font-size: 16px;
+      line-height: 25px;
+      padding: 25px;
+      position: absolute;
+      top: 53px;
+      left: 0;
+      /*background: #612e76;*/
+    }
+    .draw-prompt-tabs [id^="tab"]:checked + label {
+      /*top: 0;
+      padding-top: 17px;
+      background: #612e76;*/
+    }
+    .draw-prompt-tabs [id^="tab"]:checked ~ [id^="tab-content"] {
+      display: flex;
+      align-content: flex-start;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .tab-content > p{max-width:100px;padding:8px;}
+  </style>
+</head>
+
+<body>
+  <ul class="draw-prompt-tabs">
+    <li><input type="radio" name="tabs" id="tab1" checked />
+      <label for="tab1">选项卡 1</label>
+      <div id="tab-content1" class="tab-content">
+        <p>选项卡内容 1</p>
+        <p>选项卡内容 2</p>
+        <p>选项卡内容 3</p>
+        <p>选项卡内容 4</p>
+        <p>选项卡内容 5</p>
+        <p>选项卡内容 6</p>
+        <p>选项卡内容 7</p>
+      </div>
+    </li>
+
+    <li>
+      <input type="radio" name="tabs" id="tab2" />
+      <label for="tab2">选项卡 2</label>
+      <div id="tab-content2" class="tab-content">
+        <p>选项卡内容 2</p>
+      </div>
+    </li>
+  </ul>
+</body>
+
+</html>

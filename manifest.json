@@ -1,6 +1,6 @@
 {
-  "name": "ChatGPT",
-  "short_name": "ChatGPT",
+  "name": "拍图成文",
+  "short_name": "拍图成文",
   "description": "简洁而强大的ChatGPT应用",
   "start_url": "./",
   "display": "standalone",

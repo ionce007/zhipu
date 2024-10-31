@@ -17,7 +17,7 @@
     <link rel="shortcut icon" href="/favicon.ico?t=1.0">
     <link rel="apple-touch-icon" href="icon.png" sizes="512x512">
     <title>拍图成文</title>
-    <link rel="stylesheet" href="/assets/css/app.css?v=1.39">
+    <link rel="stylesheet" href="/assets/css/app.css?v=1.43">
 
     <script>
         let themeMode; // 2: 自动， 1: 浅色，0: 深色
@@ -712,8 +712,8 @@
                 <div class="message_input_wrapper">
                     <div id="imgUpload">
                         <div id="imgUploadIcon">
-                            <div class="poptip"><span class="poptip-arrow poptip-arrow-bottom"><em>◆</em><i>◆</i></span><p>上传文件类型支持pdf、doc/docx、xls/xlsx、ppt/pptx、txt</p><p>及各种图片（每次会话最多上传10个文件，每个文件最大20M）</p></div>
                             <div class="upload-svg-container">
+                                <div class="poptip"><span class="poptip-arrow poptip-arrow-bottom"><em>◆</em><i>◆</i></span><p>上传文件类型支持pdf、doc/docx、xls/xlsx、ppt/pptx、txt</p><p>及各种图片（每次会话最多上传10个文件，每个文件最大20M）</p></div>
                                 <svg id="svgUploadImg" xmlns="http://www.w3.org/2000/svg" width="28" height="29" viewBox="0 0 28 29" fill="none">
                                     <path
                                         d="M16.7838 23.0898H4.75C3.64543 23.0898 2.75 22.1944 2.75 21.0898L2.75 8.08984C2.75 6.98527 3.64543 6.08984 4.75 6.08984H9.05494C9.59847 6.08984 9.87001 6.08984 10.1258 6.14856C10.3525 6.20061 10.5697 6.28649 10.7686 6.403C10.9928 6.53442 11.185 6.71816 11.5693 7.08568L12.1703 7.66031C12.5424 8.01621 13.0375 8.21484 13.5525 8.21484L20.75 8.21484C21.8546 8.21484 22.75 9.11027 22.75 10.2148V12.1252"
@@ -1865,7 +1865,16 @@
             if (noLoading()) sendBtnEle.classList.toggle("activeSendBtn", inputAreaEle.value.trim().length);
             inputAreaEle.style.height = "47px";
             inputAreaEle.style.height = inputAreaEle.scrollHeight + "px";
+            document.getElementById('imgUploadIcon').style.lineHeight = document.getElementById('imgUploadIcon').clientHeight+"px";
         };
+        document.querySelectorAll('.upload-svg-container').forEach(ele => {
+            ele.addEventListener('mouseenter', (event) => {
+                document.querySelectorAll('.poptip')[0].style.display = "block"
+            });
+            ele.addEventListener('mouseleave', (event) => {
+                document.querySelectorAll('.poptip')[0].style.display = "none"
+            });
+        })
         inputAreaEle.oninput = textInputEvent;
         const toggleNavEv = () => {
             let isShowNav = document.body.classList.toggle("show-nav");
@@ -4911,6 +4920,7 @@
                     inputAreaEle.style.height = "47px";
                     inputAreaEle.value = drawPara.prompts.toString();
                     inputAreaEle.style.height = inputAreaEle.scrollHeight + 'px';
+                    document.getElementById('imgUploadIcon').style.lineHeight = document.getElementById('imgUploadIcon').clientHeight+"px";
                     sendBtnEle.classList.add('activeSendBtn');
                     let paraEle = document.getElementById('draw-style-left');
                     drawPara.default_style = drawPara.default_style === '' ? 'none' : drawPara.default_style;
@@ -5372,6 +5382,7 @@
                     document.getElementById('helpContainer').style.display = 'flex';
                     inputAreaEle.style.height = "47px";
                     inputAreaEle.value = "";
+                    document.getElementById('imgUploadIcon').style.lineHeight = document.getElementById('imgUploadIcon').clientHeight+"px";
                     initShowHelp(function(ret) {});
                     if(modelVersion === '659e54b1b8006379b4b2abd6') {
                         document.getElementById("imgUpload").style.display = "none";
@@ -7399,6 +7410,7 @@
             if (message.length !== 0 && noLoading()) {
                 inputAreaEle.value = "";
                 inputAreaEle.style.height = "47px";
+                document.getElementById('imgUploadIcon').style.lineHeight = document.getElementById('imgUploadIcon').clientHeight+"px";
                 if (keepListenMic && recing) resetRecRes();
                 generateText(message);
             }

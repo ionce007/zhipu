@@ -455,7 +455,7 @@ section.eqno {display: flex;flex-direction: row;align-content: space-between;ali
 section.eqno>eqn {width: 100%;margin-left: 3em;}
 section.eqno>span {width: 3em;text-align: right;}
 
-.markdown-body img{width:80%;}
+.markdown-body img{width:60%;}
 .markdown-body p:has(> img){text-align: center;}
 .init-help{width: 100%;flex: auto;padding-bottom: 40px;overflow-y:auto;scrollbar-width:none;}
 .help-content{margin: 0 auto;width: 700px;max-width: 800px;min-width: 550px;margin-top: 1vh;flex-shrink: 1;flex-grow: 1;color:var(--chat-text-color);}

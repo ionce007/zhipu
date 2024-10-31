@@ -57,25 +57,24 @@ getChatContent = async function (para, callback) {
     //let readChunk;
     const readChunk = async () => {
         return reader.read().then(async ({ value, done }) => {
-            if(done){ callback({ status: resStatus, done: done, data: null }); return; }
+            if (done) { callback({ status: resStatus, done: done, data: null }); return; }
             const decoder = new TextDecoder();
             value = decoder.decode(value);
-            
+
             let text = value.replaceAll('\n\nevent:message\ndata: ', ',').replaceAll('event:message\ndata: ', '');
             let ret = `[${text}]`;
-            let chunks ;
-            try{
+            let chunks;
+            try {
                 chunks = JSON.parse(ret);
             }
-            catch(e){
+            catch (e) {
                 return readChunk();
             }
             if (!chunks || chunks.length === 0) return readChunk();
             for (let i = 0; i < chunks.length; i++) {
                 let chunk = chunks[i];
-                
+
                 if (chunk) {
-                    //console.log('chunk type = ', DataType(chunk), ' chunk = ',chunk);
                     callback({ status: resStatus, done: done, data: chunk });
                 }
             }
@@ -92,7 +91,7 @@ const isImageData = (item) => {
 }
 const quoteResultDataDelta = (data) => {
     debugger;
-    if(!data.content || data.content.length === 0 || !data.meta_data || !data.meta_data.metadata_list || data.meta_data.metadata_list.length === 0) return '';
+    if (!data.content || data.content.length === 0 || !data.meta_data || !data.meta_data.metadata_list || data.meta_data.metadata_list.length === 0) return '';
     let html = `<div class="response-image">`
     data.meta_data.metadata_list.forEach((item) => {
         html += `<div class="response-image-item" ><a href="${item.url}" class="avatar">${item.title}</a></div>`;
@@ -100,8 +99,8 @@ const quoteResultDataDelta = (data) => {
     html += `</div>`
     return html;
 }
-const imageDataDelta = (images) =>{
-    if(!images || images.length === 0) return '';
+const imageDataDelta = (images) => {
+    if (!images || images.length === 0) return '';
     //let imgHtml = `<div class="response-image">`
     let imgHtml = '';
     images.forEach((img) => {
@@ -117,9 +116,9 @@ const isBrowserResultData = (item) => {
 const isQuoteResultData = (item) => {
     return item.parts && item.parts.length > 0 && item.parts[0].content && item.parts[0].content.length > 0 && item.parts[0].content[0].type === 'quote_result'
 }
-const apiUrl = 'https://chatglm.cn/chatglm/backend-api/assistant/stream';
+
 async function getStream(para, callback) {
-    
+    const apiUrl = 'https://chatglm.cn/chatglm/backend-api/assistant/stream';
     var xhr = new XMLHttpRequest();
     xhr.open('POST', apiUrl, true);
     xhr.withCredentials = true;
@@ -157,9 +156,9 @@ async function getStream(para, callback) {
             }
         ]
     }
-    if(para.modelId === '65a232c082ff90a2ad2f15e2'){
-        let cogview ;
-        if(!para.cogview) cogview = {aspect_ratio: "1:1", style: "none"}
+    if (para.modelId === '65a232c082ff90a2ad2f15e2') {
+        let cogview;
+        if (!para.cogview) cogview = { aspect_ratio: "1:1", style: "none" }
         cogview = para.cogview;
         payload.meta_data.cogview = cogview;
     }
@@ -169,43 +168,28 @@ async function getStream(para, callback) {
     }
     // "quote_result"、
     xhr.onreadystatechange = function () {
-        /*if (xhr.readyState === 3 && xhr.status == 200) {
-            const eventSource = new EventSource(apiUrl);
-            eventSource.onmessage = event => {
-                console.log('Received data:', event.data);
-              };
-          
-              eventSource.onerror = error => {
-                console.error('EventSource failed:', error);
-                eventSource.close();
-              };
-        }
-        else */if(xhr.readyState === 4 && xhr.status === 200){
+        if (xhr.readyState === 4 && xhr.status === 200) {
             let text = xhr.responseText.replaceAll('\n\nevent:message\ndata: ', ',').replaceAll('event:message\ndata: ', '');
             let ret = `[${text}]`;
-            try{
+            try {
                 let chunks = JSON.parse(ret);
                 chunks.forEach((chunk, index) => {
-                    //console.log('chunk type = ', DataType(chunk));
                     callback({ status: xhr.status, done: (index === chunks.length - 1 ? true : false), data: chunk });
-                    //callback({ status: xhr.status, progressStatus: (index === data.length - 1 ? 'finish' : 'init'), data: item });
                 });
             }
-            catch(e){
-                console.log('error = ',e.message);
+            catch (e) {
+                console.log('error = ', e.message);
             }
         }
-        else if(xhr.readyState === 14 && xhr.status === 200){
+        else if (xhr.readyState === 14 && xhr.status === 200) {
             callback({ status: xhr.status, done: true, data: null });
         }
         else if (xhr.readyState === 40 && xhr.status == 200) {
             debugger;
             let text = xhr.responseText.replaceAll('\n\nevent:message\ndata: ', ',').replaceAll('event:message\ndata: ', '');
             let ret = `[${text}]`;
-            //try{
             let data = JSON.parse(ret);
             let textData = data.filter(item => item.hasOwnProperty('parts') && isTextData(item));
-            //console.log('textData = ', textData);
             textData.map((item, index) => {
                 if (index === 0) item.parts[0].content[0].delta = item.parts[0].content[0].text;
                 else {
@@ -215,43 +199,71 @@ async function getStream(para, callback) {
                 return item;
             })
             data.forEach((item, index) => {
-                    /*if(isTextData(item)) {
-                        let deltaData = textData.find(text => text && text.parts[0].content[0].text === item.parts[0].content[0].text);
-                        if(deltaData) {
-                            item.parts[0].content[0].delta = unicodeToChinese(deltaData[0].parts[0].content[0].delta);
-                            item.parts[0].content[0].text = unicodeToChinese(deltaData[0].parts[0].content[0].text);
-                        }
-                        else item.parts[0].content[0].delta = '';
-                    }
-                    else */if (isImageData(item)) {
+                if (isImageData(item)) {
                     item.parts[0].content[0].delta = imageDataDelta(item.part[0].content[0]);
                 }
                 callback({ status: xhr.status, progressStatus: (index === data.length - 1 ? 'finish' : 'init'), data: item });
             });
-            //callback({status: xhr.status, readyState: xhr.readyState, data: data});
-            /*}catch(e){
-                debugger;
-                console.log('error.02 = ',e.message);
-            }*/
-            /*console.log('readyState === 4,  xhr.method = ', xhr.method, '  timer = ', Math.random())
-            var events = xhr.responseText.split(`\n\nevent:message\ndata: `);
-            events = events.map(item => item.startsWith('event:message\ndata: ') ? unicodeToChinese(item.replace('event:message\ndata: ','')) : unicodeToChinese(item));
-            events.forEach(function(event) {
-                var jsonStr = escapeBackslashes(event);
-                if (jsonStr) {
-                    let data = '';
-                    try{
-                        data = JSON.parse(jsonStr);
-                    }catch(e){
-                        console.log('error.02 = ',e.message);
-                    }
-                    callback({status: xhr.status, readyState: xhr.readyState, data: data});
-                }
-            });*/
         }
     }
     xhr.send(JSON.stringify(payload));
-
+}
+const getZhipuQYPrompt = async (para, callback) => {
+    const apiUrl = `https://chatglm.cn/chatglm/operation-api/assistant/welcome_info/65940acff94777010aa6b796`;
+    const headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'App-name': 'chatglm',
+        'Authorization': `Bearer ${para.token}`,
+        'Content-Type': 'application/json',
+        'X-App-Platform': 'pc',
+        'X-App-Version': '0.0.1',
+        'X-Device-Id': para.deviceId,
+        'X-Lang': 'zh',
+        'X-Request-Id': para.requestId
+    };
+    fetch(apiUrl, { method: "GET", headers })
+        .then(response => response.json())
+        .then(data => { callback(data) })
+        .catch(error => console.error('Error:', error));
+}
+const getStartPrompt = async (para, callback) => {
+    const apiUrl = `https://chatglm.cn/chatglm/backend-api/assistant/info?assistant_id=${para.assistantId}&fr=share`;
+    const headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'App-name': 'chatglm',
+        'Authorization': `Bearer ${para.token}`,
+        'Content-Type': 'application/json',
+        'X-App-Platform': 'pc',
+        'X-App-Version': '0.0.1',
+        'X-Device-Id': para.deviceId,
+        'X-Lang': 'zh',
+        'X-Request-Id': para.requestId
+    };
+    fetch(apiUrl, { method: "GET", headers })
+        .then(response => response.json())
+        .then(data => { callback(data) })
+        .catch(error => console.error('Error:', error));
+}
+const getAIDrawConfig = async (para) => {
+    const apiUrl = `https://chatglm.cn/chatglm/feed-api/drawing/config`;
+    const headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'App-name': 'chatglm',
+        'Authorization': `Bearer ${para.token}`,
+        'Content-Type': 'application/json',
+        'X-App-Platform': 'pc',
+        'X-App-Version': '0.0.1',
+        'X-Device-Id': para.deviceId,
+        'X-Lang': 'zh',
+        'X-Request-Id': para.requestId
+    };
+    /*await fetch(apiUrl,{ method: "GET", headers })
+        .then(response => response.json())
+        .then(data => { return data; }) //callback(data) })
+        .catch(error => { debugger;console.error('Error:', error)});*/
+    const res = await fetch(apiUrl, { method: "GET", headers });
+    const ret = await res.json();
+    return ret;
 }
 function escapeBackslashes(input) {
     // 用于构建最终字符串的数组
@@ -311,46 +323,38 @@ function unicodeToChinese(text) {
     });
 }
 
-const refreshZhipuAuth = async (para, callback) => {
-    /*const url = 'https://chatglm.cn/chatglm/user-api/user/refresh'
-    let headers = {
-        Authorization: data.refresh_token,
-        "Content-Type": "application/json;charset=utf-8",
-        "App-Name": "chatglm",
-        "X-Device-Id": data.deviceId,
-        "X-App-Platform": 'pc',
-        "X-App-Version": '0.0.1',
-        "X-Request-Id": data.requestId
-    }
-    const res = await fetch(url, {method: "POST", headers:headers, body: {}});
-    debugger;*/
-    const url = 'https://chatglm.cn/chatglm/user-api/user/refresh'
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', url, true);
-    xhr.withCredentials = true;
-    xhr.setRequestHeader('Accept', 'application/json, text/plain, */*');
-    xhr.setRequestHeader('App-name', 'chatglm');
-    xhr.setRequestHeader('Authorization', `Bearer ${para.refresh_token}`);
-    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-    xhr.setRequestHeader('X-App-Platform', 'pc');
-    xhr.setRequestHeader('X-App-Version', '0.0.1');
-    xhr.setRequestHeader('X-Device-Id', para.deviceId);
-    xhr.setRequestHeader('X-Lang', 'zh');
-    xhr.setRequestHeader('X-Request-Id', para.requestId);
-    const body = {};
-    xhr.onreadystatechange = async function () {
-        if (xhr.readyState === 4) {
+const refreshZhipuAuth = async (para) => {
+    return new Promise((resolve, reject) => {
+        const url = 'https://chatglm.cn/chatglm/user-api/user/refresh'
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.withCredentials = true;
+        xhr.setRequestHeader('Accept', 'application/json, text/plain, */*');
+        xhr.setRequestHeader('App-name', 'chatglm');
+        xhr.setRequestHeader('Authorization', `Bearer ${para.refresh_token}`);
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xhr.setRequestHeader('X-App-Platform', 'pc');
+        xhr.setRequestHeader('X-App-Version', '0.0.1');
+        xhr.setRequestHeader('X-Device-Id', para.deviceId);
+        xhr.setRequestHeader('X-Lang', 'zh');
+        xhr.setRequestHeader('X-Request-Id', para.requestId);
+        const body = {};
+        xhr.onreadystatechange = async function () {
             if (xhr.status === 200) {
-                // 请求成功，处理返回的数据
-                callback({ status: xhr.status, readyState: xhr.readyState, data: JSON.parse(xhr.responseText), position: 2 })
-            } else {
-                // 请求失败，处理错误
+                if(xhr.readyState === 3) {
+                    // 请求成功，处理返回的数据
+                    let cb = { status: xhr.status, readyState: xhr.readyState, data: JSON.parse(xhr.responseText), position: 2 };
+                    resolve(cb);
+                }
+            }
+            else {
                 console.error('请求失败，状态码：' + xhr.status);
-                callback({ status: xhr.status, readyState: xhr.readyState, data: null, position: 3 })
+                let cb = { status: xhr.status, readyState: xhr.readyState, data: null, position: 3 };
+                reject(cb);
             }
         }
-    }
-    xhr.send(JSON.stringify(body));
+        xhr.send(JSON.stringify(body));
+    });
 }
 
 const uploadFile = async (data, callback) => {

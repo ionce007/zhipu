@@ -3,11 +3,12 @@ const AIModels = {
     common:[
         {
             title:'ChatGLM',
-            subtitle:'智慧清言大语言模型',
+            subtitle:'智谱清言大语言模型',
             key:'65940acff94777010aa6b796',
             img:'/assets/img/com_ChatGLM.png',
             model:'Zhipu',
-            sortId:1
+            sortId:1,
+            enable:true
         },
         {
             title:'AI搜索',
@@ -15,7 +16,8 @@ const AIModels = {
             key:'659e54b1b8006379b4b2abd6',
             img:'/assets/img/com_AISousuo.jpg',
             model:'Zhipu',
-            sortId:2
+            sortId:2,
+            enable:true
         },
         {
             title:'AI画图',
@@ -23,7 +25,8 @@ const AIModels = {
             key:'65a232c082ff90a2ad2f15e2',
             img:'/assets/img/com_AIHuaTu.jpeg',
             model:'Zhipu',
-            sortId:3
+            sortId:3,
+            enable:true
         },
         {
             title:'图文生视频',
@@ -31,7 +34,8 @@ const AIModels = {
             key:'https://chatglm.cn/chatglm/video-api/v1/chat',
             img:'/assets/img/com_WenShengShipin.png',
             model:'ZhipuQingYing',
-            sortId:4
+            sortId:4,
+            enable:false
         },
         {
             title:'图生文',
@@ -39,7 +43,8 @@ const AIModels = {
             key:'65fc148a7ad0f796ff91dca5',
             img:'/assets/img/com_TuShengWen.jpg',
             model:'Zhipu',
-            sortId:6
+            sortId:6,
+            enable:true
         },
         {
             title:'文生图',
@@ -47,7 +52,8 @@ const AIModels = {
             key:'6608e22646fe082b8016f3a4',
             img:'/assets/img/com_TuShengWen.png',
             model:'Zhipu',
-            sortId:7
+            sortId:7,
+            enable:true
         },
         {
             title:'ChatGPT',
@@ -55,7 +61,8 @@ const AIModels = {
             key:'https://api.openai.com/',
             img:'/assets/img/com_OpenAI_ChatGPT.png',
             model:'ChatGPT',
-            sortId:7
+            sortId:7,
+            enable:false
         },
         {
             title:'Gemini',
@@ -63,7 +70,8 @@ const AIModels = {
             key:'https://generativelanguage.googleapis.com/',
             img:'/assets/img/com_Google_Gemini.png',
             model:'Gemini',
-            sortId:7
+            sortId:7,
+            enable:false
         },
         {
             title:'Claude',
@@ -71,7 +79,8 @@ const AIModels = {
             key:'https://api.anthropic.com/',
             img:'/assets/img/com_slack_claude.png',
             model:'Claude',
-            sortId:7
+            sortId:7,
+            enable:false
         },
     ],
     xhs:[
@@ -81,7 +90,8 @@ const AIModels = {
             key:'65b1c45c6267a41189524be1',
             img:'/assets/img/xhs_BaoWenJiexi.jpg',
             model:'Zhipu',
-            sortId:1
+            sortId:1,
+            enable:true
         },
         {
             title:'小红书文案写手',
@@ -89,7 +99,8 @@ const AIModels = {
             key:'665473b0a786a901387ca295',
             img:'/assets/img/xhs_BaoWenJiexi.jpg',
             model:'Zhipu',
-            sortId:2
+            sortId:2,
+            enable:false
         },
         {
             title:'小红书爆款文案专家',
@@ -97,7 +108,8 @@ const AIModels = {
             key:'65c650e98dbc6d938c867fb3',
             img:'/assets/img/xhs_BaoKuanWenAn.jpg',
             model:'Zhipu',
-            sortId:3
+            sortId:3,
+            enable:false
         },
         {
             title:'小红书爆款写作专家',
@@ -105,7 +117,8 @@ const AIModels = {
             key:'65b2307aea79d4ebe6db7a42',
             img:'/assets/img/xhs_BaoKuanXiezuo.jpg',
             model:'Zhipu',
-            sortId:4
+            sortId:4,
+            enable:false
         },
         {
             title:'小红书标题专家',
@@ -113,7 +126,8 @@ const AIModels = {
             key:'65b62de6735d09a2561e8319',
             img:'/assets/img/xhs_BiaoTiZhuanJia.jpg',
             model:'Zhipu',
-            sortId:5
+            sortId:5,
+            enable:false
         },
         {
             title:'小红书文案重写',
@@ -121,7 +135,8 @@ const AIModels = {
             key:'65be5dc68d2bf587bb358c3e',
             img:'/assets/img/xhs_WenAnChongXie.jpg',
             model:'Zhipu',
-            sortId:6
+            sortId:6,
+            enable:false
         },
         {
             title:'小红书爆款标题生成器（大师版）',
@@ -129,7 +144,8 @@ const AIModels = {
             key:'660a7524003a93250c2c65fc',
             img:'/assets/img/xhs_BaoKuanBiaoTiShengCheng.jpg',
             model:'Zhipu',
-            sortId:7
+            sortId:7,
+            enable:false
         },
         {
             title:'DMAI-小红书爆款素材专家',
@@ -137,7 +153,8 @@ const AIModels = {
             key:'667cd9282386fc9ec86bd92f',
             img:'/assets/img/xhs_DMAI.jpg',
             model:'Zhipu',
-            sortId:8
+            sortId:8,
+            enable:false
         },
         {
             title:'小红书违禁词助手',
@@ -145,7 +162,8 @@ const AIModels = {
             key:'6623e3c72cb731e2d8e80cd9',
             img:'/assets/img/xhs_WeiJinCi.jpg',
             model:'Zhipu',
-            sortId:9
+            sortId:9,
+            enable:true
         },
         {
             title:'小红书敏感词',
@@ -153,7 +171,8 @@ const AIModels = {
             key:'65a8e3db3ebf1b43a9cf22d2',
             img:'/assets/img/xhs_MinGanCi.jpg',
             model:'Zhipu',
-            sortId:10
+            sortId:10,
+            enable:false
         },
         {
             title:'小红书短视频大纲',
@@ -161,7 +180,8 @@ const AIModels = {
             key:'65b33ece1d2d463169273cea',
             img:'/assets/img/xhs_DuanShiPing.jpg',
             model:'Zhipu',
-            sortId:11
+            sortId:11,
+            enable:false
         },
         {
             title:'小红书Emoji表情',
@@ -169,7 +189,8 @@ const AIModels = {
             key:'65cb356b7de81f30d888dc1e',
             img:'/assets/img/xhs_EmojiBiaoQing.jpg',
             model:'Zhipu',
-            sortId:12
+            sortId:12,
+            enable:false
         },
     ],
     dy:[
@@ -179,7 +200,8 @@ const AIModels = {
             key:'65c64f56c41e61093cbf76ee',
             img:'/assets/img/dy_ShipingJiaobenZhushou.jpg',
             model:'Zhipu',
-            sortId:1
+            sortId:1,
+            enable:true
         },
         {
             title:'抖音标题优化大师',
@@ -187,7 +209,8 @@ const AIModels = {
             key:'65c38afd2b6bf796463a0f12',
             img:'/assets/img/dy_BiaotiYouhua.jpg',
             model:'Zhipu',
-            sortId:2
+            sortId:2,
+            enable:false
         },
         {
             title:'抖音影视解说',
@@ -195,7 +218,8 @@ const AIModels = {
             key:'65f46e39cc905129fd22b103',
             img:'/assets/img/dy_YingshiJieshuo.jpg',
             model:'Zhipu',
-            sortId:3
+            sortId:3,
+            enable:false
         },
         {
             title:'抖音运营助手',
@@ -203,7 +227,8 @@ const AIModels = {
             key:'65bc70acf95afcb62e729125',
             img:'/assets/img/dy_YunyingZhushou.jpg',
             model:'Zhipu',
-            sortId:4
+            sortId:4,
+            enable:false
         },
         {
             title:'抖音信息流口播广告师',
@@ -211,7 +236,8 @@ const AIModels = {
             key:'66304de39586861a586152e9',
             img:'/assets/img/dy_XinxiliuKouboGuanggao.jpg',
             model:'Zhipu',
-            sortId:5
+            sortId:5,
+            enable:false
         },
         {
             title:'抖音直播带货合规脚本',
@@ -219,7 +245,8 @@ const AIModels = {
             key:'65f805996dcba9b3339db910',
             img:'/assets/img/dy_ZhiboDaihuoHegui.jpg',
             model:'Zhipu',
-            sortId:6
+            sortId:6,
+            enable:false
         },
         {
             title:'抖音选题',
@@ -227,7 +254,8 @@ const AIModels = {
             key:'65be084a5da18bb6b6bf0ec7',
             img:'/assets/img/dy_Xuanti.jpg',
             model:'Zhipu',
-            sortId:7
+            sortId:7,
+            enable:false
         },
         {
             title:'抖音文案审核官',
@@ -235,7 +263,8 @@ const AIModels = {
             key:'65fbc9d0dc1b6e11340e670f',
             img:'/assets/img/dy_WenanShenhe.jpg',
             model:'Zhipu',
-            sortId:8
+            sortId:8,
+            enable:false
         },
         {
             title:'智搜抖音',
@@ -243,7 +272,8 @@ const AIModels = {
             key:'65fc24a41d6a703d792a4237',
             img:'/assets/img/dy_ZhiSouDouying.jpg',
             model:'Zhipu',
-            sortId:9
+            sortId:9,
+            enable:true
         },
         {
             title:'抖音高清剪辑',
@@ -251,7 +281,8 @@ const AIModels = {
             key:'6624b6e3e3e980e4304e978b',
             img:'/assets/img/dy_GaoQingJianji.jpg',
             model:'Zhipu',
-            sortId:10
+            sortId:10,
+            enable:true
         },
         {
             title:'抖音趋势分析',
@@ -269,7 +300,8 @@ const AIModels = {
             key:'660435bc69f000131a8d7663',
             img:'/assets/img/tt_ToutiaoShenbi.jpg',
             model:'Zhipu',
-            sortId:1
+            sortId:1,
+            enable:true
         },
         {
             title:'今日头条爆款大咖',
@@ -277,7 +309,8 @@ const AIModels = {
             key:'65daeb85eb555e53ba9d534e',
             img:'/assets/img/tt_BaokuanDaka.jpg',
             model:'Zhipu',
-            sortId:2
+            sortId:2,
+            enable:false
         },
         {
             title:'微头条助手',
@@ -285,7 +318,8 @@ const AIModels = {
             key:'664972a3597cbddb24fa1e27',
             img:'/assets/img/tt_WeiToutiaoZhushou.jpg',
             model:'Zhipu',
-            sortId:3
+            sortId:3,
+            enable:true
         },
         {
             title:'智绘头条',
@@ -293,7 +327,8 @@ const AIModels = {
             key:'662b7f29b1dd07b808407fea',
             img:'/assets/img/tt_ZhiHuiToutiao.jpg',
             model:'Zhipu',
-            sortId:4
+            sortId:4,
+            enable:true
         },
         {
             title:'头条改写绘图精灵',
@@ -301,7 +336,8 @@ const AIModels = {
             key:'6633bb5a1edf6afe9e1ec230',
             img:'/assets/img/tt_GaixieHuitu.jpg',
             model:'Zhipu',
-            sortId:5
+            sortId:5,
+            enable:false
         },
         {
             title:'智搜头条',
@@ -309,7 +345,8 @@ const AIModels = {
             key:'6640cb8f0eb5667e58c9bdd7',
             img:'/assets/img/tt_ZhisouToutiao.jpg',
             model:'Zhipu',
-            sortId:6
+            sortId:6,
+            enable:true
         },
     ]
 }

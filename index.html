@@ -7,15 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="简洁而强大的ChatGPT应用">
     <meta name="theme-color" content="#edeff2">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="#edeff2">
     <meta name="msapplication-TileColor" content="#edeff2">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="msapplication-TileImage" content="icon.png">
     <link rel="manifest" crossorigin="use-credentials" href="manifest.json">
     <link rel="shortcut icon" href="/favicon.ico?t=1.0">
     <link rel="apple-touch-icon" href="icon.png" sizes="512x512">
-    <title>ChatGLM</title>
-    <link rel="stylesheet" href="/assets/css/app.css?v=1.30">
+    <title>拍图成文</title>
+    <link rel="stylesheet" href="/assets/css/app.css?v=1.39">
 
     <script>
         let themeMode; // 2: 自动， 1: 浅色，0: 深色
@@ -287,7 +289,7 @@
     </div>
     <div id="loadMask">
         <div>
-            <div>ChatGLM</div>
+            <div>拍图成文</div>
             <div class="loadingCSSIcon">
                 <div></div>
                 <div></div>
@@ -658,15 +660,44 @@
                     </div>
                 </div>
             </div>
+            <div id="helpContainer" class="init-help" style="display:flex;">
+                <div class="help-content">
+                    <section>
+                        <div class="model-container">
+                            <div class="title-logo" id="helpModelLogo"></div>
+                            <div class="title-line" id="helpModelTitle"></div>
+                            <div class="title-info" id="helpModelSubtitle"></div>
+                        </div>
+                    </section>
+                    <div class="model-tips" id="modelPromptTips"></div>
+                    <section id="helpPrompt" style="margin-top:20px;"></section>
+                </div>
+            </div>
+            <div id="loadingChatHistory" style="display:none;">
+                <svg width="24" height="24">
+                    <use xlink:href="#stopResIcon" />
+                </svg><span data-i18n-key="loading"></span>
+            </div>
             <div class="messages" onscroll="handleScroll()">
                 <div id="chatlog"></div>
-                <div id="stopChat"><svg width="24" height="24">
+                <div id="stopChat">
+                    <svg width="24" height="24">
                         <use xlink:href="#stopResIcon" />
-                    </svg><span data-i18n-key="stop"></span></div>
+                    </svg><span data-i18n-key="stop"></span>
+                </div>
             </div>
-            
+            <div class="goto-bottom" title="移动到底部" style="display:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 21" fill="none" class="normal">
+                    <path d="M9.00049 17.4043C9.00049 17.9566 9.4482 18.4043 10.0005 18.4043C10.5528 18.4043 11.0005 17.9566 11.0005 17.4043L9.00049 17.4043ZM11.0005 4.4043C11.0005 3.85201 10.5528 3.4043 10.0005 3.4043C9.4482 3.4043 9.00049 3.85201 9.00049 4.4043L11.0005 4.4043ZM11.0005 17.4043L11.0005 4.4043L9.00049 4.4043L9.00049 17.4043L11.0005 17.4043Z" fill="#1A2029"></path>
+                    <path d="M5.70759 11.6972C5.31707 11.3067 4.68391 11.3067 4.29338 11.6972C3.90286 12.0877 3.90286 12.7209 4.29338 13.1114L5.70759 11.6972ZM10.0005 17.4043L9.29338 18.1114C9.68391 18.5019 10.3171 18.5019 10.7076 18.1114L10.0005 17.4043ZM15.7076 13.1114C16.0981 12.7209 16.0981 12.0877 15.7076 11.6972C15.3171 11.3067 14.6839 11.3067 14.2934 11.6972L15.7076 13.1114ZM4.29338 13.1114L9.29338 18.1114L10.7076 16.6972L5.70759 11.6972L4.29338 13.1114ZM10.7076 18.1114L15.7076 13.1114L14.2934 11.6972L9.29338 16.6972L10.7076 18.1114Z" fill="#1A2029"></path>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 21" fill="none" class="hover">
+                    <path d="M9.00049 17.2041C9.00049 17.7564 9.4482 18.2041 10.0005 18.2041C10.5528 18.2041 11.0005 17.7564 11.0005 17.2041L9.00049 17.2041ZM11.0005 4.2041C11.0005 3.65182 10.5528 3.2041 10.0005 3.2041C9.4482 3.2041 9.00049 3.65182 9.00049 4.2041L11.0005 4.2041ZM11.0005 17.2041L11.0005 4.2041L9.00049 4.2041L9.00049 17.2041L11.0005 17.2041Z" fill="#2454FF"></path>
+                    <path d="M5.70759 11.497C5.31707 11.1065 4.68391 11.1065 4.29338 11.497C3.90286 11.8875 3.90286 12.5207 4.29338 12.9112L5.70759 11.497ZM10.0005 17.2041L9.29338 17.9112C9.68391 18.3017 10.3171 18.3017 10.7076 17.9112L10.0005 17.2041ZM15.7076 12.9112C16.0981 12.5207 16.0981 11.8875 15.7076 11.497C15.3171 11.1065 14.6839 11.1065 14.2934 11.497L15.7076 12.9112ZM4.29338 12.9112L9.29338 17.9112L10.7076 16.497L5.70759 11.497L4.29338 12.9112ZM10.7076 17.9112L15.7076 12.9112L14.2934 11.497L9.29338 16.497L10.7076 17.9112Z" fill="#2454FF"></path>
+                </svg>
+            </div>
             <div class="bottom_wrapper clearfix">
-                <div class="bottom-option-container">
+                <div class="bottom-option-container" style=display:none;>
                     <div class="draw-image-para" style="display:none;">
                         <div class="draw-para-poptip draw-style-left" style="display:none;" id="drawStyleContainer"></div>
                         <div class="draw-para-poptip draw-ratio-left" style="display:none;" id="drawRatioContainer"></div>
@@ -682,13 +713,15 @@
                     <div id="imgUpload">
                         <div id="imgUploadIcon">
                             <div class="poptip"><span class="poptip-arrow poptip-arrow-bottom"><em>◆</em><i>◆</i></span><p>上传文件类型支持pdf、doc/docx、xls/xlsx、ppt/pptx、txt</p><p>及各种图片（每次会话最多上传10个文件，每个文件最大20M）</p></div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="29" viewBox="0 0 28 29" fill="none">
-                                <path
-                                    d="M16.7838 23.0898H4.75C3.64543 23.0898 2.75 22.1944 2.75 21.0898L2.75 8.08984C2.75 6.98527 3.64543 6.08984 4.75 6.08984H9.05494C9.59847 6.08984 9.87001 6.08984 10.1258 6.14856C10.3525 6.20061 10.5697 6.28649 10.7686 6.403C10.9928 6.53442 11.185 6.71816 11.5693 7.08568L12.1703 7.66031C12.5424 8.01621 13.0375 8.21484 13.5525 8.21484L20.75 8.21484C21.8546 8.21484 22.75 9.11027 22.75 10.2148V12.1252"
-                                    stroke="#4F5866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M22.75 15.8481V23.1106M22.75 15.8481L25.25 18.7354M22.75 15.8481L20.25 18.7354"
-                                    stroke="#4F5866" stroke-width="2" stroke-linecap="round" />
-                            </svg>
+                            <div class="upload-svg-container">
+                                <svg id="svgUploadImg" xmlns="http://www.w3.org/2000/svg" width="28" height="29" viewBox="0 0 28 29" fill="none">
+                                    <path
+                                        d="M16.7838 23.0898H4.75C3.64543 23.0898 2.75 22.1944 2.75 21.0898L2.75 8.08984C2.75 6.98527 3.64543 6.08984 4.75 6.08984H9.05494C9.59847 6.08984 9.87001 6.08984 10.1258 6.14856C10.3525 6.20061 10.5697 6.28649 10.7686 6.403C10.9928 6.53442 11.185 6.71816 11.5693 7.08568L12.1703 7.66031C12.5424 8.01621 13.0375 8.21484 13.5525 8.21484L20.75 8.21484C21.8546 8.21484 22.75 9.11027 22.75 10.2148V12.1252"
+                                        stroke="#4F5866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M22.75 15.8481V23.1106M22.75 15.8481L25.25 18.7354M22.75 15.8481L20.25 18.7354"
+                                        stroke="#4F5866" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                            </div>
                         </div>
                         <form id="sendMessageForm" name="sendMessageForm" class="sendMessageForm">
                             <input class="upload-input" id="file" name="file" type="file" multiple="" accept="" title="文件上传">
@@ -1053,16 +1086,7 @@
             </div>
         </div>
     </div>
-    <div class="goto-bottom" title="移动到底部" style="display:none;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 21" fill="none" class="normal">
-            <path d="M9.00049 17.4043C9.00049 17.9566 9.4482 18.4043 10.0005 18.4043C10.5528 18.4043 11.0005 17.9566 11.0005 17.4043L9.00049 17.4043ZM11.0005 4.4043C11.0005 3.85201 10.5528 3.4043 10.0005 3.4043C9.4482 3.4043 9.00049 3.85201 9.00049 4.4043L11.0005 4.4043ZM11.0005 17.4043L11.0005 4.4043L9.00049 4.4043L9.00049 17.4043L11.0005 17.4043Z" fill="#1A2029"></path>
-            <path d="M5.70759 11.6972C5.31707 11.3067 4.68391 11.3067 4.29338 11.6972C3.90286 12.0877 3.90286 12.7209 4.29338 13.1114L5.70759 11.6972ZM10.0005 17.4043L9.29338 18.1114C9.68391 18.5019 10.3171 18.5019 10.7076 18.1114L10.0005 17.4043ZM15.7076 13.1114C16.0981 12.7209 16.0981 12.0877 15.7076 11.6972C15.3171 11.3067 14.6839 11.3067 14.2934 11.6972L15.7076 13.1114ZM4.29338 13.1114L9.29338 18.1114L10.7076 16.6972L5.70759 11.6972L4.29338 13.1114ZM10.7076 18.1114L15.7076 13.1114L14.2934 11.6972L9.29338 16.6972L10.7076 18.1114Z" fill="#1A2029"></path>
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 21" fill="none" class="hover">
-            <path d="M9.00049 17.2041C9.00049 17.7564 9.4482 18.2041 10.0005 18.2041C10.5528 18.2041 11.0005 17.7564 11.0005 17.2041L9.00049 17.2041ZM11.0005 4.2041C11.0005 3.65182 10.5528 3.2041 10.0005 3.2041C9.4482 3.2041 9.00049 3.65182 9.00049 4.2041L11.0005 4.2041ZM11.0005 17.2041L11.0005 4.2041L9.00049 4.2041L9.00049 17.2041L11.0005 17.2041Z" fill="#2454FF"></path>
-            <path d="M5.70759 11.497C5.31707 11.1065 4.68391 11.1065 4.29338 11.497C3.90286 11.8875 3.90286 12.5207 4.29338 12.9112L5.70759 11.497ZM10.0005 17.2041L9.29338 17.9112C9.68391 18.3017 10.3171 18.3017 10.7076 17.9112L10.0005 17.2041ZM15.7076 12.9112C16.0981 12.5207 16.0981 11.8875 15.7076 11.497C15.3171 11.1065 14.6839 11.1065 14.2934 11.497L15.7076 12.9112ZM4.29338 12.9112L9.29338 17.9112L10.7076 16.497L5.70759 11.497L4.29338 12.9112ZM10.7076 17.9112L15.7076 12.9112L14.2934 11.497L9.29338 16.497L10.7076 17.9112Z" fill="#2454FF"></path>
-        </svg>
-    </div>
+
     <!--<link crossorigin="anonymous" href="https://fastly.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css" rel="stylesheet">
     <link crossorigin="anonymous" href="https://fastly.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css" rel="stylesheet">
     <link crossorigin="anonymous" href="https://fastly.jsdelivr.net/npm/notyf@3.10.0/notyf.min.css" rel="stylesheet">
@@ -1072,15 +1096,17 @@
     <link crossorigin="anonymous" href="/assets/css/notyf.min.css" rel="stylesheet">
     <script crossorigin="anonymous" src="/assets/js/jquery-3.4.1.js"></script>
     <script crossorigin="anonymous" src="/assets/js/notyf.min.js"></script>
-    <script crossorigin="anonymous" src="/assets/js/aimodel.js?t=1.1"></script>
+    <script crossorigin="anonymous" src="/assets/js/aimodel.js?t=1.2"></script>
     <script crossorigin="anonymous" src="/assets/js/crypto-js.min.js?t=1.0"></script>
-    <script crossorigin="anonymous" src="/assets/js/stream.js?t=1.47"></script>
+    <script crossorigin="anonymous" src="/assets/js/stream.js?t=1.55"></script>
     <script crossorigin="anonymous" src="/assets/js/draw_para.js?t=0.03"></script>
-    <!--<script crossorigin="anonymous" src="/assets/prompts/content.js?t=0.4"></script>-->
-    <style>
-        .markdown-body img{width:80%;}
-        .markdown-body p:has(> img){text-align: center;;}
-    </style>
+    <!--<script crossorigin="anonymous" src="https://fastly.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+    <script crossorigin="anonymous" src="https://fastly.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <script crossorigin="anonymous" src="https://fastly.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>-->
+    <script crossorigin="anonymous" src="/assets/js/markdown-it.min.js"></script>
+    <script crossorigin="anonymous" src="/assets/js/highlight.min.js"></script>
+    <script crossorigin="anonymous" src="/assets/js/katex.min.js"></script>
+
     <script>
         const notyf = new Notyf({
             position: { x: "center", y: "top" },
@@ -1370,6 +1396,7 @@
                 "pause": "Pause",
                 "resume": "Resume",
                 "stop": "Stop",
+                "loading": "loading......",
                 "style": "Style",
                 "role": "Role",
                 "volume": "Volume",
@@ -1530,6 +1557,7 @@
                 "pause": "暂停",
                 "resume": "恢复",
                 "stop": "停止",
+                "loading": "加载中......",
                 "style": "风格",
                 "role": "角色",
                 "volume": "音量",
@@ -1720,15 +1748,10 @@
             modelVersion = getLocaleModel()
             let modelsHtml = '';
             Object.keys(AIModels).forEach(function(key, idx) {
-                var json = AIModels[key];
+                var json = AIModels[key].filter(item => { return item.enable === true});
                 json.sort(function(a,b){return b.sort - a. sort});
                 let modelApplyName = key === 'xhs' ? '小红书应用' :(key === 'dy' ? '抖音应用' : ( key === 'common' ? '通用应用' : '今日头条应用'));
-                /*switch(key){
-                    case 'xhs': modelApplyName = '小红书应用'; break;
-                    case 'dy':  modelApplyName = '抖音应用'; break;
-                    case 'com':  modelApplyName = '通用应用'; break;
-                    case 'toutiao':  modelApplyName = '今日头条应用'; break;
-                }*/
+
                 modelsHtml += `<div class="modelApply"><span class="modelApplyName">${modelApplyName}</span></div>`;
                 Object.keys(json).forEach(function(item, index){
                     let clsName = modelVersion === json[index].key ? 'modelSingle activeModel' : (json[index].model === 'Zhipu' ? 'modelSingle' : 'modelSingle modelDisabled');
@@ -1739,6 +1762,20 @@
             models.innerHTML = modelsHtml;
         }
         loadModel();
+        const initUploadFileButton = () => {
+            const modelKey = getLocaleModel();
+            if(modelKey === "659e54b1b8006379b4b2abd6"){
+                document.getElementById("imgUpload").style.display = "none";
+                document.getElementById("chatinput").style.paddingLeft = "13px";
+            }
+            else {
+                document.getElementById("imgUpload").style.display = "block";
+                document.getElementById("chatinput").style.paddingLeft = "47px"
+            }
+            if(modelKey === '65a232c082ff90a2ad2f15e2') document.querySelectorAll('.bottom-option-container')[0].style.display = "flex";
+            else document.querySelectorAll('.bottom-option-container')[0].style.display = "none";
+        }
+        initUploadFileButton();
     </script>
     <script>
         const windowEle = document.getElementsByClassName("chat_window")[0];
@@ -1840,9 +1877,29 @@
             let ele = document.querySelectorAll('.messages')[0];
             ele.scrollTop = ele.scrollHeight - ele.clientHeight;
         }
-        
+        const shopHelpMousedown = (event) => {
+            const clsName = event.target.className;
+            let prompt = "";
+            if(clsName.indexOf('welcome-prompt-item-cate') >= 0 || clsName.indexOf('welcome-prompt-item-text') >= 0){
+                if(clsName.indexOf('welcome-prompt-item-text') >= 0) prompt = decodeURIComponent(event.target.getAttribute("data-value"));
+                else prompt =  decodeURIComponent(event.target.parentElement.getAttribute("data-value"));
+                inputAreaEle.value = prompt;
+                sendBtnEle.click();
+            }
+            else if(clsName.indexOf('text-item-wrap') >= 0){
+                prompt = event.target.innerHTML;
+                inputAreaEle.value = prompt;
+                sendBtnEle.click();
+            }
+            else if(clsName.indexOf('create-same-image') >=0 ){
+
+            }
+            console.log('mmm');
+        }
         document.body.addEventListener("mousedown", event => {
             const clsName = event.target.className;
+            const clsNames = ["welcome-prompt-item-text","welcome-prompt-item-cate","text-item-wrap"];
+            if(clsNames.indexOf(clsName)>=0) { event.target.MouseEvent = shopHelpMousedown(event);}
             if(typeof(clsName) === 'object' && clsName.toString() === '[object SVGAnimatedString]'){ gotoBottom(); return; }
             if(clsName === 'prompt-label' || clsName === 'tab-content' || clsName === 'draw-prompt-span' || clsName.indexOf('draw-prompt-left') >=0 ) {processDrawParameter(event);return;}
             if(event.target.className.indexOf('draw-para-poptip') < 0 || event.target.parentElement.className.indexOf('draw-para-poptip') < 0){
@@ -3396,15 +3453,8 @@
         };
         initVoiceFunc();
         speechServiceEle.dispatchEvent(new Event("change"));
-    </script>
-    <!--<script crossorigin="anonymous" src="https://fastly.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
-    <script crossorigin="anonymous" src="https://fastly.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
-    <script crossorigin="anonymous" src="https://fastly.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>-->
-    <script crossorigin="anonymous" src="/assets/js/markdown-it.min.js"></script>
-    <script crossorigin="anonymous" src="/assets/js/highlight.min.js"></script>
-    <script crossorigin="anonymous" src="/assets/js/katex.min.js"></script>
 
-    <script>
+
         const API_URL = "v1/chat/completions";
         const Gemini_API_URL = "v1/models/";
         const Claude_API_URL = "v1/messages";
@@ -3456,6 +3506,87 @@
         let controller;
         let controllerId;
         let ZhipuAuth = '', DeviceId = '', ConversationId = '', ZhipuAuth_RefreshToken = '';
+
+        const IsExpireZhipuAuth = (token) =>{
+            let accessToken = token.split('.');
+            let decodeToken = base64decode(accessToken[1]);//.replace('{"alg":"HS256","typ":"JWT"}','');
+            let tokenJson = JSON.parse(decodeToken);
+            let exp = tokenJson.exp * 1000;
+            if(exp < (new Date()).getTime()) return true;
+            else return false;
+        }
+        const refreshZhipuAuthToken = async () => {
+            const data = { refresh_token: ZhipuAuth_RefreshToken, deviceId: DeviceId, requestId: getXRequestId() }
+            const ret = await refreshZhipuAuth(data);
+            return ret;
+        }
+        const getZhipuAuth = async (callback) => {
+            //const url = "http://www.foryet.net/api/actions.aspx?action=zhipuauth_token";//
+            const url = 'https://cms.foryet.com/api/zhipuauth';
+            await fetch(url,{ method: "GET" })
+                .then(response => response.json())
+                .then(data => { 
+                    callback(data); 
+                })
+                .catch(e => { 
+                    let ret = {status: false, message: e.message, access_token: '', refresh_token: '', deviceId: ''};
+                    callback(ret);
+                })
+        }
+
+        const saveNewZhipuToken = async () => {
+            /*var token = `${ZhipuAuth}｜${ZhipuAuth_RefreshToken}`;
+            const url = "https://cms.foryet.com/api/refreshZhipuToken"
+            $.post(url, { token: token }, function(res){
+                console.log("res = " , res);
+                return res;
+            });*/
+            //const url = "http://www.foryet.net/api/actions.aspx?action=create_zhipuauth_token"; 
+            //const token = { access_token:ZhipuAuth, refresh_token:ZhipuAuth_RefreshToken }
+            var token = `${ZhipuAuth}｜${ZhipuAuth_RefreshToken}`;
+            const url = "https://cms.foryet.com/api/refreshZhipuToken"
+            await fetch(url, { method: "POST", token: token })
+                .then(res => res.json())
+                .then(data => {console.log(data)})
+                .catch(e =>{ 
+                    //let ret = {status: false, message: e.message, access_token: '', refresh_token: '', deviceId: ''}; 
+                    console.log(e.message);
+                })
+        }
+        const checkZhipuAuth =  async () => {
+            if(IsExpireZhipuAuth(ZhipuAuth)){
+                const ret = await refreshZhipuAuthToken();
+                if(ret.data) {
+                    ZhipuAuth = ret.data.result.access_token;
+                    ZhipuAuth_RefreshToken = ret.data.result.refresh_token;
+                    await saveNewZhipuToken();
+                }
+            }
+        }
+        const initZhipuAuth = async (callback) => {
+            if(ZhipuAuth && !IsExpireZhipuAuth(ZhipuAuth)) {callback({status:true}); return;}
+            await getZhipuAuth(async function(ret){
+                if(!ret || ret.status === false) { ZhipuAuth = ''; DeviceId = ''; ZhipuAuth_RefreshToken = ''; return;}
+                else {
+                    ZhipuAuth = ret.access_token;
+                    ZhipuAuth_RefreshToken = ret.refresh_token;
+                    DeviceId = ret.deviceId;
+                    if(IsExpireZhipuAuth(ZhipuAuth)){
+                        ret = await refreshZhipuAuthToken();
+                        if(ret.data) {
+                            ZhipuAuth = ret.data.result.access_token;
+                            ZhipuAuth_RefreshToken = ret.data.result.refresh_token;
+                            saveNewZhipuToken();
+                            callback({status:true});
+                        }
+                    }
+                    else {
+                        callback({status:true});
+                    }
+                }
+            });
+        }
+        //initZhipuAuth();
         const findOffsetTop = (ele, target) => { // target is positioned ancestor element
             if (ele.offsetParent !== target) return ele.offsetTop + findOffsetTop(ele.offsetParent, target);
             else return ele.offsetTop;
@@ -3513,7 +3644,6 @@
         const checkStorage = () => {
             let used = 0;
             for (let key in localStorage) {
-                console.log(`key = ${key}, value = ${localStorage[key]}`);
                 localStorage.hasOwnProperty(key) && (used += localStorage[key].length)
             }
             let remain = 5242880 - used;
@@ -3946,8 +4076,14 @@
                 }*/
                 let avatar_html = '';
                 let modelData = document.querySelectorAll(`div.modelSingle[data-value="${model}"]`)[0];
-                let imgSrc = modelData.children[0].children[0].src;
-                let title = modelData.children[1].children[0].innerText;
+                let arrModel = [];
+                Object.keys(AIModels).forEach(function(key, idx) {
+                    arrModel.push.apply(arrModel, AIModels[key]);
+                });
+                let jsonModel = arrModel.find(item => { return item.key === model});
+                if(!jsonModel) jsonModel = arrModel[0];
+                let imgSrc = jsonModel.img;// modelData.children[0].children[0].src;
+                let title = jsonModel.title;  //modelData.children[1].children[0].innerText;
                 if (model.startsWith("gpt")) {
                     ele.classList.add("gptAvatar")
                     avatar_html = `<svg width="24" height="24"><use xlink:href="#aiIcon"></use></svg>`;
@@ -4459,7 +4595,8 @@
             document.body.addEventListener("mousedown", endEditEvent, true);
             return inputEle;
         };
-        const chatEleEvent = function (ev) {
+
+        const chatEleEvent = async function (ev) {
             ev.preventDefault();
             ev.stopPropagation();
             let idx, folderIdx, inFolderIdx;
@@ -4472,14 +4609,20 @@
                 idx = folderData[folderIdx].idxs[inFolderIdx];
             }
             if (ev.target.classList.contains("chatLi")) {
+                let loadingEle = document.getElementById("loadingChatHistory");
+                loadingEle.style.display = "flex";
+                await delay();
                 if (searchChatEle.value || activeChatIdx !== idx) {
                     endAll();
                     activeChatIdx = idx;
                     activeChat(this);
+                    let isHelpShow = document.getElementById("helpContainer").style.display;
+                    if(isHelpShow !== "none") document.getElementById("helpContainer").style.display = "none";
                 }
                 if (window.innerWidth <= 800) {
                     document.body.classList.remove("show-nav");
                 }
+                loadingEle.style.display = "none";
             } else if (ev.target.dataset.type === "chatEdit") {
                 toEditName(idx, this, 1);
             } else if (ev.target.dataset.type === "chatDel") {
@@ -4572,55 +4715,9 @@
                 } else messagesEle.scrollTop = 0;
             }
             messagesEle.scrollTo(0, messagesEle.scrollHeight)
+            if(!ele) document.getElementById("helpContainer").style.display = "none";
         };
-        const IsExpireZhipuAuth = (token) =>{
-            let accessToken = token.split('.');
-            let decodeToken = base64decode(accessToken[1]);//.replace('{"alg":"HS256","typ":"JWT"}','');
-            let tokenJson = JSON.parse(decodeToken);
-            let exp = tokenJson.exp * 1000;
-            if(exp < (new Date()).getTime()) return true;
-            else return false;
-        }
-        const refreshZhipuAuthToken = async () =>{
-            const data = {refresh_token: ret.refresh_token, deviceId: DeviceId, requestId: getXRequestId()}
-            res = await refreshZhipuAuth(data, function(refresh_res){
-                if(refresh_res.data){
-                    //ret.access_token = refresh_res.data.result.access_token;
-                    ZhipuAuth = refresh_res.data.result.access_token;
-                    var token = `${refresh_res.data.result.access_token}｜${refresh_res.data.result.refresh_token}`;
-                    $.post("https://cms.foryet.com/api/refreshZhipuToken", { token: token }, function(refreshRes){
-                        console.log("更新授权成功！refreshRes = " , refreshRes);
-                        return refreshRes;
-                    });
-                }
-            });
-        }
-        const getZhipuAuth = async () => {
-            const url = 'https://cms.foryet.com/api/zhipuauth'
-            let res = await fetch(url);
-            let ret = await res.json();
-            if(ret){
-                ZhipuAuth = ret.access_token;
-                ZhipuAuth_RefreshToken = ret.refresh_token;
-                DeviceId = ret.deviceId;
-                if(IsExpireZhipuAuth(ret.access_token)) {
-                    const data = {refresh_token: ret.refresh_token, deviceId: DeviceId, requestId: getXRequestId()}
-                    res = await refreshZhipuAuth(data, function(refresh_res){
-                        if(refresh_res.data){
-                            ZhipuAuth = refresh_res.data.result.access_token;
-                            ZhipuAuth_RefreshToken = refresh_res.data.result.refresh_token
-                            var token = `${refresh_res.data.result.access_token}｜${refresh_res.data.result.refresh_token}`;
-                            $.post("https://cms.foryet.com/api/refreshZhipuToken", { token: token }, function(refreshRes){
-                                console.log("更新授权成功！refreshRes = " , refreshRes);
-                                return refreshRes;
-                            });
-                        }
-                    });
-                }
-                else return ret;
-            }
-            else return '';
-        }
+
         newChatEle.onclick = async () => {
             endAll();
             addNewChat();
@@ -4673,9 +4770,160 @@
                 folderListEle.children[folderIdx].classList.add("expandFolder");
             }
         }
+        
         initChats();
         initExpanded();
-        activeChat();
+        //activeChat();
+        const getXRequestId = () =>{
+            let text = new Date().getTime() + '';
+            var hash = CryptoJS.MD5(text);
+            return hash.toString(CryptoJS.enc.Hex);
+        }
+        const getSelectedModel = () => {
+            const model = getLocaleModel()
+            let modelArr = [];
+            Object.keys(AIModels).forEach(function(key, idx) {
+                modelArr.push.apply(modelArr, AIModels[key]);
+            });
+            const curModel = modelArr.find(item => item.key === model);
+            return curModel;
+        }
+        const showHelp = async () => {
+            const model = getSelectedModel();
+            document.getElementById('helpModelLogo').innerHTML = `<img width="60px" src="${model.img}?image_process=resize,fw_300,fh_300">`
+            document.getElementById('helpModelTitle').innerHTML = `${model.title}`;
+            document.getElementById('helpModelSubtitle').innerHTML = `${model.subtitle}`
+            if(model.key === '65a232c082ff90a2ad2f15e2') {
+                const para = {assistantId: model.key, token: ZhipuAuth, deviceId: DeviceId, requestId: getXRequestId() };
+                const res = await getAIDrawConfig(para);
+                if(res){
+                    let html = `                        <div class="title-info left tips-title">温馨提示：</div>
+                    <div class="title-info left ml30">1、你可以选择“精选工具”实现相应要求的功能，或选择“一键生同款”制作相似图片；</div>
+                    <div class="title-info left ml30">2、或者在输入框给出你对图片的要求，生成相应的图片。</div>`
+                    document.getElementById('modelPromptTips').innerHTML = html;
+
+                    html = `                            <div class="draw-tool-box"><div class="draw-tool-tittle">
+                        <div><img class="draw-tool-icon" src="/assets/img/draw_color_font.svg" alt=""></div>
+                        <span class="draw-tool-text">精选工具</span>
+                    </div>
+                    <div class="draw-tool-content" id="drawToolContainer">`;
+                    if(res.status === 0 && res.result && res.result.collections && res.result.collections.length > 0){
+                        res.result.collections.forEach((item) => {
+                            html += `                                <div class="draw-tool-item" data-value=${encodeURIComponent(JSON.stringify(item))}>
+                                <img src="${item.image},resize,fw_300,fh_300">
+                            </div>`
+                        })
+                    }
+                    html += `                            </div>
+                    </div>
+                    <div class="draw-tool-box">
+                        <div class="draw-tool-tittle">
+                            <div><img class="draw-tool-icon" src="/assets/img/draw_color_font.svg" alt=""></div>
+                            <span class="draw-tool-text">一键生同款</span>
+                        </div>
+                        <div class="draw-sameimg-container" id="drawSameImgContainer">`;
+                    if(res.status === 0 && res.result && res.result.feeds && res.result.feeds.length > 0){
+                        let prompts = res.result.feeds.filter(item => item.prompt !== '');
+                        prompts.forEach((item) => {
+                            html += `                                <div class="draw-sameimg-item" data-value=${encodeURIComponent(JSON.stringify(item))}>
+                                <img src="${item.image},resize,fw_300,fh_300" alt="${item.title}">
+                                <div class="draw-sameimg-create">
+                                    <img class="draw-sameimg-icon" src="/assets/img/aidraw_duplicate_ic.svg" alt="一键创作同款">
+                                    <span class='create-same-image'>创作同款</span>
+                                </div>
+                            </div>`
+                        })
+                    }
+                    html += `                            </div>
+                    </div>`
+                    document.getElementById('helpPrompt').innerHTML = html;
+                }
+            }
+            else if(model.key === '65940acff94777010aa6b796'){
+                const para = {assistantId: model.key, token: ZhipuAuth, deviceId: DeviceId, requestId: getXRequestId() };
+                getZhipuQYPrompt(para, function(res){ 
+                    document.getElementById('modelPromptTips').innerHTML = res.result.opening.replaceAll('智谱清言','拍图成文').replaceAll('清言','拍图成文').replaceAll('line-height: 1','line-height:0.2');
+                    let html = '                        <div><div class="welcome-prompt">';
+                    res.result.texts.forEach((item) => {
+                        html += `                        <div class="welcome-prompt-item">
+                                <div class="welcome-prompt-item-text" data-value="${encodeURIComponent(item.instruction.prompt)}">
+                                    <div class="welcome-prompt-item-cate">${item.category}</div>${item.text}
+                                </div>
+                            </div>`
+                    })
+                    html += `                        </div></div>`;
+                    document.getElementById('helpPrompt').innerHTML = html;
+                })
+            }
+            else{
+                const para = {assistantId: model.key, token: ZhipuAuth, deviceId: DeviceId, requestId: getXRequestId() };
+                getStartPrompt(para, function(res){
+                    if(res.status === 0 && res.result && res.result.starter_prompts && res.result.starter_prompts.length > 0){
+                        let html = `                        <div class="title-info left tips-title">温馨提示：</div>
+                        <div class="title-info left ml30">1、你可以在底部的输入框输入提示语，并可以同时按输入框左侧按钮上传图片；</div>
+                        <div class="title-info left ml30">2、或者点击下面给出的提示语例子，生成相应文章。</div>`
+                        document.getElementById('modelPromptTips').innerHTML = html;
+                        html = '';
+                        res.result.starter_prompts.forEach((item) => {
+                            html += `                        <div class="help-text-container">
+                                <div class="text-item-container">
+                                    <div class="text-item">
+                                        <span class="text-item-wrap">${item}</span>
+                                    </div>
+                                </div>
+                            </div>`;
+                        })
+                        document.getElementById('helpPrompt').innerHTML = html;
+                    }
+                })
+            }
+        }
+        const initShowHelp = async (callback) => {
+            initZhipuAuth(async function(res){
+                await showHelp();
+                callback({status:'completed'})
+                document.querySelectorAll('.draw-tool-item').forEach(ele => {
+                    ele.addEventListener('mousedown', event =>{
+                        setDrawPrompt(event.target.parentElement);
+                    })
+                })
+                document.querySelectorAll('.draw-sameimg-create').forEach(ele => {
+                    ele.addEventListener('mousedown', event =>{
+                        setDrawPrompt(event.target.parentElement.parentElement);
+                    })
+                })
+                document.querySelectorAll('.welcome-prompt-item').forEach(ele => {
+                    ele.addEventListener('mousedown', event =>{
+                        event.stopPropagation();
+                        console.log('aaaaa')
+                        //setDrawPrompt(event.target.parentElement.parentElement);
+                    },false)
+                })
+                document.querySelectorAll('.text-item-wrap').forEach(ele => {
+                    ele.addEventListener('mousedown', event =>{
+                        event.stopPropagation();
+                        console.log('bbbbb')
+                        //setDrawPrompt(event.target.parentElement.parentElement);
+                    })
+                })
+                const setDrawPrompt = (ele) => {
+                    let drawPara = JSON.parse(decodeURIComponent(ele.getAttribute('data-value')));
+                    inputAreaEle.style.height = "47px";
+                    inputAreaEle.value = drawPara.prompts.toString();
+                    inputAreaEle.style.height = inputAreaEle.scrollHeight + 'px';
+                    sendBtnEle.classList.add('activeSendBtn');
+                    let paraEle = document.getElementById('draw-style-left');
+                    drawPara.default_style = drawPara.default_style === '' ? 'none' : drawPara.default_style;
+                    paraEle.parentElement.setAttribute('data-value', drawPara.default_style);
+                    paraEle.innerHTML = drawParamater.style.find(item => { return item.key === drawPara.default_style }).label;
+                    paraEle = document.getElementById('draw-ratio-left');
+                    paraEle.parentElement.setAttribute('data-value', drawPara.default_scale);
+                    paraEle.innerHTML = drawParamater.ratio.find(item => { return item.value === drawPara.default_scale }).name;
+                }
+            })
+        }
+        initShowHelp(function(status) { activeChat(); } );
+          
         document.getElementById("clearSearch").onclick = () => {
             searchChatEle.value = "";
             searchChatEle.dispatchEvent(new Event("input"));
@@ -5009,6 +5257,71 @@
         document.addEventListener("keydown", ctrlHotKeyEv);
         document.addEventListener("keydown", ctrlAltHotKeyEv);
         
+        const loadDrawStyleData = () => {
+            let styles = drawParamater.style;
+            styles.sort((a,b)=>{ return a.id- b.id });
+            let styleEle = document.getElementById('drawStyleContainer');
+            let html = '';
+            styles.forEach((item,index)=>{
+                html += `                            <div class="draw-style-item" data-value="${item.key}">
+                    <div class="style-sample"><img src="${item.cover}" class="avatar"></div>
+                    <div class="style-sample-title">
+                        <p class="style-sample-subtitle">${item.label}</p>
+                    </div>
+                </div>`
+            });
+            styleEle.innerHTML = html;
+        }
+        const processDrawParameter = (event) =>{
+            if('draw-prompt-span' === event.target.className){
+                let text = inputAreaEle.value.trimEnd();
+                if(text) inputAreaEle.value = inputAreaEle.value.trimEnd() + ' , ' + event.target.innerText;
+                else inputAreaEle.value = event.target.innerText;
+                inputAreaEle.focus();
+            }
+            else {
+                const pId = event.target.parentElement.id
+                if(pId) {
+                    let paras = document.querySelectorAll(`.draw-para-item[data-for='${pId}']`);
+                    if(paras && paras.length > 0){
+                        const value = event.target.getAttribute('data-value');
+                        paras[0].setAttribute('data-value', value);
+                        paras[0].children[0].innerHTML = event.target.children[1].children[0].innerHTML;
+                    }
+                }
+            }
+        }
+        const loadDrawRatioData = () => {
+            let ratios = drawParamater.ratio;
+            let ratioEle = document.getElementById('drawRatioContainer');
+            let html = '';
+            ratios.forEach((item,index)=>{
+                html += `                            <div class="draw-style-item" data-value="${item.value}">
+                    <div class="ratio-sample-item ration-width-${item.ratio}"><div class="ratio-sample"></div></div>
+                    <div class="style-sample-title">
+                        <p class="style-sample-subtitle">${item.name}</p>
+                    </div>
+                </div>`
+            });
+            ratioEle.innerHTML = html;
+        }
+        const loadDrawPromtData = () => {
+            let skills = drawParamater.skills;
+            skills.sort((a,b)=>{return a.id-b.id});
+            let html = `<ul class="draw-prompt-tabs">`
+            skills.forEach((item,index) => {
+                let isChecked = index === 0 ? 'checked' : ''
+                html += `<li><input type="radio" name="tabs" id="tabSkill${item.key}" ${isChecked} /><label class='prompt-label' for="tabSkill${item.key}">${item.label}</label><div id="tabContent${item.key}" class="tab-content">`;
+                item.skills.forEach(sub => {
+                    html +=`<span class='draw-prompt-span'>${sub}</span>`;
+                })
+                html += `</div></li>`;
+            })
+            html += `</ul>`
+            let promptEle = document.getElementById('drawPromptContainer');
+            promptEle.innerHTML = html;
+        }
+        
 
         const initSetting = async () => {
             //loadModel();
@@ -5021,7 +5334,7 @@
                 if (activedEle) activedEle.classList.remove("activeModel");
                 modelVersion = getLocaleModel();
                 activedEle = modelSetEle.querySelector(`[data-value="${modelVersion}"]`);
-                activedEle.classList.add("activeModel");
+                if(activedEle) activedEle.classList.add("activeModel");
                 modelVer.textContent = getLocaleModelName(modelVersion);//activedEle.dataset.ver;
                 if (modelVersion.startsWith("gpt")) {
                     modelType = 1;
@@ -5040,13 +5353,11 @@
                 let drawParaEle = document.querySelectorAll('.draw-image-para')[0];
                 if(modelVersion === '65a232c082ff90a2ad2f15e2') drawParaEle.style.display = 'flex';
                 else drawParaEle.style.display = 'none';
-                loadDrawStyleData();
-                loadDrawRatioData();
-                loadDrawPromtData();
+
             };
-            let ret = await getZhipuAuth();
-            /*ZhipuAuth = ret.access_token;
-            DeviceId = ret.deviceId;*/
+            loadDrawStyleData();
+            loadDrawRatioData();
+            loadDrawPromtData();
 
             applyModelVersion();
             modelSetEle.onclick = (ev) => {
@@ -5057,6 +5368,20 @@
                     applyModelVersion();
                     modelSetEle.style.display = "none";
                     selectorEle.classList.remove("showModels");
+                    showHelp();
+                    document.getElementById('helpContainer').style.display = 'flex';
+                    inputAreaEle.style.height = "47px";
+                    inputAreaEle.value = "";
+                    initShowHelp(function(ret) {});
+                    if(modelVersion === '659e54b1b8006379b4b2abd6') {
+                        document.getElementById("imgUpload").style.display = "none";
+                        inputAreaEle.style.paddingLeft = "13px";
+                    }
+                    else {
+                        document.getElementById("imgUpload").style.display = "block";
+                        inputAreaEle.style.paddingLeft = "47px"
+                    }
+                    initUploadFileButton();
                 }
             }
             const apiHostEle = document.getElementById("apiHostInput");
@@ -5445,7 +5770,7 @@
                 let cssEle = document.body.getElementsByTagName("link")[0];
                 cssEle.href = cssEle.href.replace(is ? "light" : "dark", is ? "dark" : "light");
                 let hlCssEle = document.body.getElementsByTagName("link")[1];
-                hlCssEle.href = hlCssEle.href.replace(is ? "github" : "github-dark", is ? "github-dark" : "github");
+                hlCssEle.href = hlCssEle.href.replace(is ? "/github." : "/github-dark.", is ? "/github-dark." : "/github.");
                 justDarkTheme(is);
             }
             const handleAutoMode = (ele) => {
@@ -6271,7 +6596,7 @@
                         </div>`;
                     imgItem.innerHTML = html;
                     document.getElementById('uploadFileContainer').appendChild(imgItem);
-                    if(data.order ===0 ) document.getElementById('uploadFileContainer').style.display = 'flex';
+                    if(data.order === 0 ) document.querySelectorAll('.bottom-option-container')[0].style.display = document.getElementById('uploadFileContainer').style.display = 'flex';
                     uploadFile(para, function(res){
                         if(res.status === 0){
                             const image = { file_name: res.result.file_name, file_id: res.result.file_id, image_url: res.result.file_url,file_size: para.file.size, order: res.result.order }
@@ -6289,7 +6614,10 @@
                                     let fileId = this.parentElement.getAttribute('data-fileid');
                                     parent.remove();
                                     uploadFiles = uploadFiles.filter(item => item.file_id !== fileId);
-                                    if(uploadFiles && uploadFiles.length === 0) document.getElementById('uploadFileContainer').style.display = 'none';
+                                    if(uploadFiles && uploadFiles.length === 0) {
+                                        if(currentModelName !== '65a232c082ff90a2ad2f15e2') document.querySelectorAll('.bottom-option-container')[0].style.display = "none";
+                                        document.getElementById('uploadFileContainer').style.display = 'none';
+                                    }
                                     else{
                                         uploadFiles.forEach((item, index) => {
                                             uploadFiles[index].order =  index;
@@ -6490,11 +6818,7 @@
         let refreshIdx;
         let currentResEle;
         let progressData = "";
-        const getXRequestId = () =>{
-            let text = new Date().getTime() + '';
-            var hash = CryptoJS.MD5(text);
-            return hash.toString(CryptoJS.enc.Hex);
-        }
+
         const showResponseImage =  (images) =>{
             debugger;
             if(!images || !images.length === 0) return '';
@@ -6516,8 +6840,9 @@
             return html;
         }
         let responseImages = [];
-
         const streamGen = async (long) => {
+            let isHelpShow = document.getElementById('helpContainer').style.display;
+            if(isHelpShow !== 'none') document.getElementById('helpContainer').style.display = "none";
             currentModelName = getModelName();
             controller = new AbortController();
             controllerId = setTimeout(() => {
@@ -6533,6 +6858,7 @@
                 currentResEle.children[1].innerHTML = "<p class='cursorCls'><br /></p>";
                 currentResEle.dataset.loading = true;
                 scrollToBottom();
+                gotoBottom();
             }
             let idx = isRefresh ? refreshIdx : data.length;
             if (existVoice && enableAutoVoice && !long) {
@@ -6604,7 +6930,6 @@
                                 if(preTextData) delta = chunk.parts[0].content[0].text.substring(preTextData.parts[0].content[0].text.length);
                             }
                             else if (isImageData(chunk)) {
-                                console.log('image chunk = ',chunk);
                                 if(imageData.indexOf(chunk.parts[0].content[0].image[0].image_url) < 0 ) {
                                     delta = `\n\n![这是图片AI生成图片的描述](${chunk.parts[0].content[0].image[0].image_url} "这是AI生成的图片标题")\n\n`;
                                     //delta = chunk.parts[0].content[0].image[0].image_url;//imageDataDelta(chunk.parts[0].content[0].image);
@@ -6650,55 +6975,12 @@
                             if (longReplyFlag) return streamGen(true);
                             stopLoading(false);
                         }
-                        /*let isShow = isTextData(res.data) || isImageData(res.data);
-                        if(isShow){
-                            let content = res.data.parts[0].content[0].delta; 
-                            if (content) {
-                                if (existVoice && enableAutoVoice && currentVoiceIdx === autoVoiceDataIdx) {
-                                        let spliter = content.match(/\.|\?|!|~|。|？|！|\n/);
-                                        if (spliter) {
-                                            let voiceText = progressData.slice(autoVoiceIdx) + content.slice(0, spliter.index + 1);
-                                            autoVoiceIdx += voiceText.length;
-                                            autoSpeechEvent(voiceText, currentResEle);
-                                        }
-                                    }
-                                if (progressData && textSpeed) await delay();
-                                progressData += content;
-                                container.innerHTML = await md.render(progressData);
-                                ConversationId = res.data.conversation_id;
-                                if (container.children.length > 1 && currentResEle.children[1].children.length === container.children.length) {
-                                    morphdom(currentResEle.children[1].lastElementChild, container.lastElementChild);
-                                } else {
-                                    morphdom(currentResEle.children[1], container, { childrenOnly: true });
-                                }
-                                scrollToBottom();
-                            }
-                        }
-                        if(res.data.progressStatus === 'finish'){
-                            let lenStop = res.data.progressStatus === 'finish';
-                            longReplyFlag = enableLongReply && lenStop;
-                            let ele = currentResEle.children[0].children[2].children[0].children[0];//let ele = currentResEle.lastChild.children[0].children[0];
-                            if (!enableLongReply && lenStop) { ele.className = "halfRefReq optionItem"; ele.title = translations[locale]["continue"] }
-                            else { ele.className = "refreshReq optionItem"; ele.title = translations[locale]["refresh"] };
-                            if (existVoice && enableAutoVoice && currentVoiceIdx === autoVoiceDataIdx) {
-                                let voiceText = longReplyFlag ? "" : progressData.slice(autoVoiceIdx), stop = !longReplyFlag;
-                                autoSpeechEvent(voiceText, currentResEle, false, stop);
-                            }
-                            
-                            if (isRefresh) {
-                                data[refreshIdx].content = progressData;
-                                data[refreshIdx].model = currentModelName;
-                            } else {
-                                if (long) { data[data.length - 1].content = progressData }
-                                else { data.push({ role: "assistant", content: progressData, model: currentModelName }) }
-                            }
-                            if (longReplyFlag) return streamGen(true);
-                            stopLoading(false);
-                        }*/
                         if(uploadFiles && uploadFiles.length > 0){
                             uploadFiles = [];
                             let imgContainer = document.getElementById('uploadFileContainer');
                             imgContainer.innerHTML = "";
+                            if(currentModelName !== '65a232c082ff90a2ad2f15e2') document.querySelectorAll('.bottom-option-container')[0].style.display = "none";
+                            else document.querySelectorAll('.bottom-option-container')[0].style.display = "flex";
                             imgContainer.style.display = 'none';
                         }
                     })
@@ -7141,9 +7423,6 @@
         let drawParaEles = Array.from(document.getElementsByClassName('draw-para-label'));
         drawParaEles.forEach(ele => {
             ele.addEventListener('click', function() {
-                /*if(this.id ==='draw-style-left') loadDrawStyleData();
-                else if(this.id === 'draw-ratio-left') loadDrawRatioData();
-                else if(this.id === 'draw-prompt-left') loadDrawPromtData();*/
                 Array.from(document.getElementsByClassName('draw-para-label')).forEach(child => {
                     document.getElementsByClassName(child.id)[0].style.display = 'none';
                 })
@@ -7154,70 +7433,7 @@
                 document.getElementsByClassName(this.id)[0].style.display = 'block';
             });
         })
-        const loadDrawStyleData = () => {
-            let styles = drawParamater.style;
-            styles.sort((a,b)=>{ return a.id- b.id });
-            let styleEle = document.getElementById('drawStyleContainer');
-            let html = '';
-            styles.forEach((item,index)=>{
-                html += `                            <div class="draw-style-item" data-value="${item.key}">
-                    <div class="style-sample"><img src="${item.cover}" class="avatar"></div>
-                    <div class="style-sample-title">
-                        <p class="style-sample-subtitle">${item.label}</p>
-                    </div>
-                </div>`
-            });
-            styleEle.innerHTML = html;
-        }
-        const processDrawParameter = (event) =>{
-            if('draw-prompt-span' === event.target.className){
-                let text = inputAreaEle.value.trimEnd();
-                if(text) inputAreaEle.value = inputAreaEle.value.trimEnd() + ' , ' + event.target.innerText;
-                else inputAreaEle.value = event.target.innerText;
-                inputAreaEle.focus();
-            }
-            else {
-                const pId = event.target.parentElement.id
-                if(pId) {
-                    let paras = document.querySelectorAll(`.draw-para-item[data-for='${pId}']`);
-                    if(paras && paras.length > 0){
-                        const value = event.target.getAttribute('data-value');
-                        paras[0].setAttribute('data-value', value);
-                        paras[0].children[0].innerHTML = event.target.children[1].children[0].innerHTML;
-                    }
-                }
-            }
-        }
-        const loadDrawRatioData = () => {
-            let ratios = drawParamater.ratio;
-            let ratioEle = document.getElementById('drawRatioContainer');
-            let html = '';
-            ratios.forEach((item,index)=>{
-                html += `                            <div class="draw-style-item" data-value="${item.value}">
-                    <div class="ratio-sample-item ration-width-${item.ratio}"><div class="ratio-sample"></div></div>
-                    <div class="style-sample-title">
-                        <p class="style-sample-subtitle">${item.name}</p>
-                    </div>
-                </div>`
-            });
-            ratioEle.innerHTML = html;
-        }
-        const loadDrawPromtData = () => {
-            let skills = drawParamater.skills;
-            skills.sort((a,b)=>{return a.id-b.id});
-            let html = `<ul class="draw-prompt-tabs">`
-            skills.forEach((item,index) => {
-                let isChecked = index === 0 ? 'checked' : ''
-                html += `<li><input type="radio" name="tabs" id="tabSkill${item.key}" ${isChecked} /><label class='prompt-label' for="tabSkill${item.key}">${item.label}</label><div id="tabContent${item.key}" class="tab-content">`;
-                item.skills.forEach(sub => {
-                    html +=`<span class='draw-prompt-span'>${sub}</span>`;
-                })
-                html += `</div></li>`;
-            })
-            html += `</ul>`
-            let promptEle = document.getElementById('drawPromptContainer');
-            promptEle.innerHTML = html;
-        }
+
         const handleScroll = () => {
             showGotoBottom();
         }

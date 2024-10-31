@@ -63,9 +63,9 @@ body {background-color: var(--background);width: 100%;height: 100%;margin: 0;dis
 .chatAvatar>img,.avatar-img>img {display: block;width: 100%;height: 100%;border-radius: 2px;}
 .modelAvatar>svg,.chatAvatar>svg {display: block;}
 #chatlog .request {position: relative;display: flex;justify-content: center;margin:auto 20px;flex-direction: column;}
-.requestBody {white-space: pre-wrap;margin: 5px 40px 30px 40px;flex: 1;/*width:100%;*/max-width:none;}
+.requestBody {white-space: pre-wrap;margin: 5px 40px 30px 40px;flex: 1;/*width:100%;*/max-width:none;font-size:14px;line-height:25px;}
 #chatlog .response {background: var(--response-color);position: relative;display: flex;justify-content: center;margin:auto 20px;flex-direction:column;}
-.response .markdown-body {margin: 5px 40px 30px 40px;flex: 1;background: var(--response-color) !important;max-width:none;}
+.response .markdown-body {margin: 5px 40px 30px 40px;flex: 1;background: var(--response-color) !important;max-width:none;font-size:14px;line-height:25px;}
 #chatlog .markdown-body a {padding: 0 1px 0 2px;}
 #chatlog .markdown-body pre {padding: 10px 10px 5px 10px;position: relative;background: var(--code-color);}
 #chatlog .markdown-body .mermaid {margin-bottom: 8px;padding: 0 10px 0 10px;position: relative;background: var(--code-color);border-radius: 6px;}
@@ -215,16 +215,16 @@ input[type=range]::-webkit-slider-runnable-track {-webkit-appearance: none;box-s
 .expandFolder>.headLi>svg {transform: rotate(90deg);}
 .expandFolder>.chatsInFolder {display: block;}
 .chatsInFolder {display: none;margin-left: 22px;padding-left: 2px;border-left: 1px solid var(--text-color);}
-.headLi,.chatLi {cursor: pointer;width: 100%;height: 50px;color: var(--text-color);display: flex;justify-content: space-between;align-items: center;position: relative;}
+.headLi,.chatLi {cursor: pointer;width: 100%;height: 50px;color: var(--text-color);display: flex;justify-content: space-between;align-items: center;position: relative;padding:10px 0}
 .headLi *,.chatLi * {pointer-events: none;}
-.headLi>svg,.chatLi>svg {margin-left: 10px;color: var(--btn-color);pointer-events: none;}
+.headLi>svg,.chatLi>svg {margin-left:10px;margin-top:10px;color: var(--btn-color);pointer-events: none;}
 .folderOption svg,.chatOption svg {pointer-events: auto;}
 .headLi svg *,.chatLi svg * {pointer-events: none;}
 .headLi .folderInfo {position: absolute;left: 40px;height: 40px;max-width: calc(100% - 115px);}
-.chatLi .chatInfo {position: absolute;left: 40px;height: 40px;max-width: calc(100% - 90px);top:15px;}
+.chatLi .chatInfo {position: absolute;left: 40px;height: 40px;max-width: calc(100% - 90px);top:10px;}
 .folderInfo *,.chatInfo * {-webkit-user-select: none;user-select: none;}
 .chatInfo span {background: #f8b26a;}
-.headLi .folderName,.chatLi .chatName {color: var(--btn-color);text-overflow: ellipsis;white-space: nowrap;overflow: hidden;line-height: 20px;height: 20px;}
+.headLi .folderName,.chatLi .chatName {color: var(--btn-color);text-overflow: ellipsis;white-space: nowrap;overflow: hidden;line-height: 20px;height: 20px;font-size:14px;}
 .headLi .folderNum,.chatLi .chatPre {color: var(--btn-color);text-overflow: ellipsis;white-space: nowrap;overflow: hidden;font-size: 12px;line-height: 20px;height: 20px;}
 .headLi .folderOption,.chatLi .chatOption {visibility: hidden;display: flex;color: #777;margin-right: 2px;}
 .folderLi .chatLi>svg {margin-left: 5px;}

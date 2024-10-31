@@ -17,7 +17,7 @@
     <link rel="shortcut icon" href="/favicon.ico?t=1.0">
     <link rel="apple-touch-icon" href="icon.png" sizes="512x512">
     <title>拍图成文</title>
-    <link rel="stylesheet" href="/assets/css/app.css?v=1.43">
+    <link rel="stylesheet" href="/assets/css/app.css?v=1.46">
 
     <script>
         let themeMode; // 2: 自动， 1: 浅色，0: 深色
@@ -4621,7 +4621,8 @@
                 let loadingEle = document.getElementById("loadingChatHistory");
                 loadingEle.style.display = "flex";
                 await delay();
-                if (searchChatEle.value || activeChatIdx !== idx) {
+                const isShowHelp = document.getElementById('helpContainer').style.display;
+                if (searchChatEle.value || activeChatIdx !== idx || (activeChatIdx === idx && isShowHelp !== 'none')) {
                     endAll();
                     activeChatIdx = idx;
                     activeChat(this);

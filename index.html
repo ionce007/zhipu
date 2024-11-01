@@ -3521,7 +3521,7 @@
             let decodeToken = base64decode(accessToken[1]);//.replace('{"alg":"HS256","typ":"JWT"}','');
             let tokenJson = JSON.parse(decodeToken);
             let exp = tokenJson.exp * 1000;
-            if(exp < (new Date()).getTime()) return true;
+            if(new Date(exp) < new Date()) return true;
             else return false;
         }
         const refreshZhipuAuthToken = async () => {
@@ -3544,23 +3544,13 @@
         }
 
         const saveNewZhipuToken = async () => {
-            /*var token = `${ZhipuAuth}｜${ZhipuAuth_RefreshToken}`;
+            let token = {token:`${ZhipuAuth}｜${ZhipuAuth_RefreshToken}`};
+            let headers = {'Content-Type': 'application/json'}
             const url = "https://cms.foryet.com/api/refreshZhipuToken"
-            $.post(url, { token: token }, function(res){
-                console.log("res = " , res);
-                return res;
-            });*/
-            //const url = "http://www.foryet.net/api/actions.aspx?action=create_zhipuauth_token"; 
-            //const token = { access_token:ZhipuAuth, refresh_token:ZhipuAuth_RefreshToken }
-            var token = `${ZhipuAuth}｜${ZhipuAuth_RefreshToken}`;
-            const url = "https://cms.foryet.com/api/refreshZhipuToken"
-            await fetch(url, { method: "POST", token: token })
-                .then(res => res.json())
-                .then(data => {console.log(data)})
-                .catch(e =>{ 
-                    //let ret = {status: false, message: e.message, access_token: '', refresh_token: '', deviceId: ''}; 
-                    console.log(e.message);
-                })
+            await fetch(url, { method: "POST",headers: headers, body: JSON.stringify(token) })
+                .then(res => {return res.json()})
+                .then(data => { return data;})
+                .catch(e =>{ console.log(e.message);})
         }
         const checkZhipuAuth =  async () => {
             if(IsExpireZhipuAuth(ZhipuAuth)){
@@ -7507,10 +7497,10 @@
 <script>
     var _hmt = _hmt || [];
     (function() {
-      var hm = document.createElement("script");
+      /*var hm = document.createElement("script");
       hm.src = "https://hm.baidu.com/hm.js?a7cf8ae9d6b1a28364f7f9724afca2ce";
       var s = document.getElementsByTagName("script")[0]; 
-      s.parentNode.insertBefore(hm, s);
+      s.parentNode.insertBefore(hm, s);*/
     })();
 </script>    
 </html>
